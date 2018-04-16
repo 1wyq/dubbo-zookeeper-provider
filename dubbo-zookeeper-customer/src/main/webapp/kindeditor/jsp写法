@@ -1,0 +1,66 @@
+﻿1.引入的文件
+   <link rel="stylesheet" href="kindeditor/themes/default/default.css" />
+	<link rel="stylesheet" href="kindeditor/plugins/code/prettify.css" />
+	<script charset="utf-8" src="kindeditor/kindeditor-all-min.js"></script>
+	<script charset="utf-8" src="kindeditor/lang/zh-CN.js"></script>
+	<script charset="utf-8" src="kindeditor/plugins/code/prettify.js"></script>
+2.标签写法
+   <textarea   name="content1"  style=" width:700px;height:200px;">
+   
+   </textarea>
+3.js写法
+  <script>
+		KindEditor.ready(function(K) {
+			var editor1 = K.create('textarea[name="content1"]', {
+				cssPath : 'kindeditor/plugins/code/prettify.css',
+				uploadJson : 'kindeditor/jsp/upload_json.jsp',
+				fileManagerJson : 'kindeditor/jsp/file_manager_json.jsp',
+				allowFileManager : true,
+				//将富文本编辑中的内容同步到表单序列化中
+			    afterBlur:function(){this.sync();}
+			});
+			 
+			prettyPrint();
+			
+			editor1.html("<strong><span style='font-size:24px;'>editor1</span></strong>")
+		});
+		
+		 
+	</script>
+4.上传图片路径配置
+     kindeditor/jsp/file_manager_json.jsp 中
+     //根目录路径，可以指定绝对路径，比如 /var/www/attached/
+	String rootPath = pageContext.getServletContext().getRealPath("/") + "[指定上传的路径]/";
+	//根目录URL，可以指定绝对路径，比如 http://www.yoursite.com/attached/
+	String rootUrl  = request.getContextPath() + "/[指定上传的路径]/";
+	
+	kindeitor/upload_json.jsp  中
+	
+	//文件保存目录路径
+	String savePath = pageContext.getServletContext().getRealPath("/") + "[指定上传的路径]/";
+
+	//文件保存目录URL
+	String saveUrl  = request.getContextPath() + "/[指定上传的路径]/";
+ 5.jar包 
+ 
+    将json_simple-1.1.jar   放入lib 目录中
+	
+6.bug解决
+KindEditor.remove('textarea[name="content"]');
+$.getScript('kindeditor/kindeditor-all-min.js', function() {
+				KindEditor.basePath = '<%=request.getContextPath()%>/kindeditor/';
+				var yuyang = KindEditor.create('#logins textarea[name="memberDescribe"]', {
+					cssPath : 'kindeditor/plugins/code/prettify.css',
+					uploadJson : 'kindeditor/jsp/upload_json.jsp',
+					fileManagerJson : 'kindeditor/jsp/file_manager_json.jsp',
+					allowFileManager : true,
+					afterBlur:function(){this.sync();}//和ajax同步
+				});
+				prettyPrint();
+				yuyang.html(response.memberDescribe);
+				yuyang.sync();//重新打开时和ajax同步
+ 			});
+		内容要写在js里，否则不会动态变化！！
+kindeditor使用的4.1.5版本，与自带的swfupload的冲突， SWFUpload
+解决方法：修改kindeditor的SWFUPLOAD的命令空间为其他的，自己为了图简单，才发现kindeditor4.1.8已经解决这个问题，下载kindeditor4.10替换直接解决问题
+	

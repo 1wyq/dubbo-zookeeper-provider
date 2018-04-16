@@ -13,15 +13,15 @@ public class Promotion implements Serializable {
     private Date create_date;
     private Date modify_date;
     private Integer orders;
-    private Date begin_date;
-    private Date end_date;
+    private String begin_date;
+    private String end_date;
     private String introduction;
     private Integer is_coupon_allowed;
     private Integer is_free_shipping;
     private Double maximum_price;
     private Integer maximum_quantity;
-    private Double minimumprice;
-    private Integer minimumquantity;
+    private Double minimum_price;
+    private Integer minimum_quantity;
     private String name;
     private String point_expression;
     private String price_expression;
@@ -34,15 +34,15 @@ public class Promotion implements Serializable {
                 ", create_date=" + create_date +
                 ", modify_date=" + modify_date +
                 ", orders=" + orders +
-                ", begin_date=" + begin_date +
-                ", end_date=" + end_date +
+                ", begin_date='" + begin_date + '\'' +
+                ", end_date='" + end_date + '\'' +
                 ", introduction='" + introduction + '\'' +
                 ", is_coupon_allowed=" + is_coupon_allowed +
                 ", is_free_shipping=" + is_free_shipping +
                 ", maximum_price=" + maximum_price +
                 ", maximum_quantity=" + maximum_quantity +
-                ", minimumprice=" + minimumprice +
-                ", minimumquantity=" + minimumquantity +
+                ", minimum_price=" + minimum_price +
+                ", minimum_quantity=" + minimum_quantity +
                 ", name='" + name + '\'' +
                 ", point_expression='" + point_expression + '\'' +
                 ", price_expression='" + price_expression + '\'' +
@@ -82,19 +82,19 @@ public class Promotion implements Serializable {
         this.orders = orders;
     }
 
-    public Date getBegin_date() {
+    public String getBegin_date() {
         return begin_date;
     }
 
-    public void setBegin_date(Date begin_date) {
+    public void setBegin_date(String begin_date) {
         this.begin_date = begin_date;
     }
 
-    public Date getEnd_date() {
+    public String getEnd_date() {
         return end_date;
     }
 
-    public void setEnd_date(Date end_date) {
+    public void setEnd_date(String end_date) {
         this.end_date = end_date;
     }
 
@@ -138,20 +138,20 @@ public class Promotion implements Serializable {
         this.maximum_quantity = maximum_quantity;
     }
 
-    public Double getMinimumprice() {
-        return minimumprice;
+    public Double getMinimum_price() {
+        return minimum_price;
     }
 
-    public void setMinimumprice(Double minimumprice) {
-        this.minimumprice = minimumprice;
+    public void setMinimum_price(Double minimum_price) {
+        this.minimum_price = minimum_price;
     }
 
-    public Integer getMinimumquantity() {
-        return minimumquantity;
+    public Integer getMinimum_quantity() {
+        return minimum_quantity;
     }
 
-    public void setMinimumquantity(Integer minimumquantity) {
-        this.minimumquantity = minimumquantity;
+    public void setMinimum_quantity(Integer minimum_quantity) {
+        this.minimum_quantity = minimum_quantity;
     }
 
     public String getName() {

@@ -12,12 +12,21 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Insert title here</title>
+
+
+
+
+    <script language="javascript" type="text/javascript" src="<%=request.getContextPath()%>/My97DatePicker/WdatePicker.js"></script>
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/EasyUI/themes/default/easyui.css" type="text/css"/>
 
     <!-- 引入EasyUI的图标样式文件-->
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/EasyUI/themes/icon.css" type="text/css"/>
+
+
+
+
 </head>
 <body>
 <!-- 引入JQuery -->
@@ -36,44 +45,69 @@
 <a id="addpromotion" onclick="addpromotion()"herf="#"    class="easyui-linkbutton" data-options="iconCls:'icon-add'">添加</a>
 <a id="deletepromotion" onclick="deletepromotion()"    class="easyui-linkbutton" data-options="iconCls:'icon-delete'">删除</a>
 <a id="refreshPromotionlist" onclick="refreshPromotionlist()"    class="easyui-linkbutton" data-options="iconCls:'icon-arrow_refresh'">刷新</a>
-        <table id="promotiontable"></table>
+<input id="ss" class="easyui-searchbox" style="width:300px"
+       data-options="searcher:qq,prompt:'Please Input Value',menu:'#mm'" onclick="serachBytiaojian()"></input>
+<div id="mm" style="width:800px">
+    <div data-options="name:'name',iconCls:'icon-ok'">名称</div>
+    <div data-options="name:'title'">标题</div>
+</div>
+<table id="promotiontable"></table>
 
         <script type="text/javascript">
+            function refreshPromotionlist(){
+                query();
+            }
+            /**
+             * 条件搜索框查询
+             * @param value
+             * @param name
+             */
+            function qq(value,name){
+               // alert(value+":"+name)
+                query();
+            }
+
+            /**
+             * 页面加载查询
+             */
             $(function (){
                 query();
             })
 
                function query(){
 
-                $('#promotiontable').datagrid({
-                url:'<%=request.getContextPath()%>/userController/promotionList.do',
-                columns:[[
-                    {field:'aa',title:'',checkbox:true},
-                {field:'name',title:'名称',width:100},
-                {field:'title',title:'标题',width:100},
-                {field:'begin_date',title:'起始日期',width:100},
-                {field:'end_date',title:'结束日期',width:100},
-                {field:'orders',title:'排序',width:100},
-                {field:'xxx',title:'操作',width:100,
-                    formatter: function(value,row,index){
-                        return "<a  href=‘<%=request.getContextPath()%>/userController/updatethisPromotion.do’>[编辑]</a>";
+                    $('#promotiontable').datagrid({
+                    url:'<%=request.getContextPath()%>/userController/promotionList.do',
+                    columns:[[
+                        {field:'aa',title:'',checkbox:true},
+                    {field:'name',title:'名称',width:100},
+                    {field:'title',title:'标题',width:100},
+                    {field:'begin_date',title:'起始日期',width:100},
+                    {field:'end_date',title:'结束日期',width:100},
+                    {field:'orders',title:'排序',width:100},
+                    {field:'xxx',title:'操作',width:100,
+                        formatter: function(value,row,index){
+                            return "<a href = 'javascript:void(0)' onclick='showBackPromotion("+row.id+")'>[编辑]</a>"
+                        },
+                    }
+
+                    ]],
+                    pagination:true,
+                    pageNumber:1,
+                    pageSize:3,
+                    pageList:[3,1,7],
+                    queryParams: {
+                    "title": $("#ss").val(),
+                    "name":$("#ss").val()
                     },
-                }
 
-                ]],
-                pagination:true,
-                pageNumber:1,
-                pageSize:3,
-                pageList:[3,1,7],
-                queryParams: {
-                "title": $("#zjmc").val(),
-                "name":$("[name='hmdhponenum']").val()
-                },
-
-                });
+                    });
 
                 }
             function addpromotion(){
+                location.href="<%=request.getContextPath()%>/promotion/addpromotion.jsp";
+            }
+            /* function addpromotion(){
                 $('#addxxx').dialog({
                     title: '基本信息',
                     width: 1000,
@@ -87,15 +121,15 @@
                         handler:function(){
                             $.messager.confirm('确认','您确认添加信息吗？',function(r){
                                 if (r){
-                                    $('#useruForm').form('submit', {
-                                        url:"<%=request.getContextPath()%>/userAction!addUserunew.action",
+                                    $('#addPromotion').form('submit', {
+                                        url:"<%=request.getContextPath()%>/userController/addpromotion.do",
                                         onSubmit: function(){
                                             return $('#useruForm').form('validate');
                                         },
                                         success:function(data){
 
-                                            $('#dd7').dialog("close");
-                                            $('#useruTable6').datagrid('reload')
+                                            $('#addxxx').dialog("close");
+                                            query();
                                             $.messager.show({
                                                 title:'添加',
                                                 msg:'添加成功',
@@ -111,11 +145,56 @@
                     },{
                         text:'关闭',
                         handler:function(){
-                            $('#dd7').dialog("close");
+                            $('#addxxx').dialog("close");
                         }
                     }]
                 });
+            }*/
+            /**
+             * 删除
+             */
+            function deletepromotion(){
+                var arr = $('#promotiontable').datagrid("getSelections")
+                var id = "";
+                var count = arr.length
+                for (var i = 0; i < arr.length; i++) {
+                    id += ","+arr[i].id;
+                }
+                /*var aa = id.substr(1);*/
+                alert(id)
+                $.messager.confirm('确认','您确认删除这'+count+'条数据？',function(r){
+                    if (r){
+                        $.ajax({
+                            url:'<%=request.getContextPath()%>/userController/deletepromotion.do',
+                            type:"post",
+                            data:{"name":id},
+                            dataType:"text",
+                            success:function(add){
+                                if(add >= 1){
+
+                                    $.messager.show({
+                                        title:'删除',
+                                        msg:'成功删除'+count+'数据',
+                                        timeout:1000,
+                                        showType:'show'
+                                    });
+
+                                }
+                                query();
+
+                            },
+                            error:function(){
+                                alert("xxxx")
+                            }
+                        });
+                    }
+                });
             }
+            function showBackPromotion(id){
+                location.href="<%=request.getContextPath()%>/userController/showBackPromotion.do?id="+id;
+            }
+
+
        </script>
 </body>
 </html>

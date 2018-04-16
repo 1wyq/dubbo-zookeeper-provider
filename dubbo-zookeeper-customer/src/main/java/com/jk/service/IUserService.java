@@ -1,9 +1,7 @@
 package com.jk.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.jk.model.Promotion;
-import com.jk.model.User;
-import com.jk.model.Xxx;
+import com.jk.model.*;
 
 import java.util.List;
 
@@ -20,6 +18,29 @@ public interface IUserService {
     public List<User> userList(User user);
 
     JSONObject promotionList(Promotion promotion, int page, int rows);
+
+
+    List<MemberGrade> queryLevel();
+
+    List<ProductCategory> queryCategory();
+
+    int deletepromotion(String name);
+
+    List<ProductCategory> queryBrand();
+
+    int addpromotion(Promotion promotion);
+
+    JSONObject seoList(int page, int rows);
+
+    List<Seotype> querySeoType();
+
+    Seo querySeoById(Integer id);
+
+    int updateGood(Seo seo);
+
+    Promotion showBackPromotion(Integer id);
+
+
     /**
      *
      */
